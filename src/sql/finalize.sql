@@ -140,6 +140,34 @@ CREATE OPERATOR - (
     RIGHTARG = veci8
 );
 
+CREATE OPERATOR * (
+    PROCEDURE = _vectors_vecf32_operator_mul,
+    LEFTARG = vector,
+    RIGHTARG = vector,
+    COMMUTATOR = *
+);
+
+CREATE OPERATOR * (
+    PROCEDURE = _vectors_vecf16_operator_mul,
+    LEFTARG = vecf16,
+    RIGHTARG = vecf16,
+    COMMUTATOR = *
+);
+
+CREATE OPERATOR * (
+    PROCEDURE = _vectors_svecf32_operator_mul,
+    LEFTARG = svector,
+    RIGHTARG = svector,
+    COMMUTATOR = *
+);
+
+CREATE OPERATOR * (
+    PROCEDURE = _vectors_veci8_operator_mul,
+    LEFTARG = veci8,
+    RIGHTARG = veci8,
+    COMMUTATOR = *
+);
+
 CREATE OPERATOR & (
     PROCEDURE = _vectors_bvecf32_operator_and,
     LEFTARG = bvector,
@@ -775,7 +803,7 @@ CREATE VIEW pg_vector_index_stat AS
          pg_index X ON C.oid = X.indrelid JOIN
          pg_class I ON I.oid = X.indexrelid JOIN
          pg_am A ON A.oid = I.relam
-    WHERE A.amname = 'vectors';
+    WHERE A.amname = 'vectors' AND C.relkind = 'r';
 
 GRANT SELECT ON TABLE pg_vector_index_stat TO PUBLIC;
 
